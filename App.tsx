@@ -1,10 +1,10 @@
-import React from 'react';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+import React from 'react';
 
 import {HomeScreen} from './src/screens/Home';
-import {UploadScreen} from './src/screens/Upload';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+import {UploadScreen} from './src/screens/UploadScreen';
 
 const Tab = createBottomTabNavigator();
 

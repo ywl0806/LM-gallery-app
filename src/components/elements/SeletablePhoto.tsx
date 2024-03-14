@@ -3,7 +3,7 @@ import React from 'react';
 import {Image, StyleSheet, View, TouchableWithoutFeedback} from 'react-native';
 import colors from '../../../colors';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 type Props = {
   photo: PhotoIdentifier;
   isSeleted: boolean;
@@ -13,8 +13,8 @@ type Props = {
 const styles = StyleSheet.create({
   item: {
     flex: 1,
-    // maxWidth: '33%',
     padding: 5,
+    maxWidth: '33.333333%',
     aspectRatio: 1,
     width: '100%',
   },
@@ -44,6 +44,17 @@ export const SelectablePhoto = ({photo, isSeleted, seletePhoto}: Props) => {
           {isSeleted && <Icon name="check" color={colors.dark_gray} />}
         </View>
       </TouchableWithoutFeedback>
+      {photo.node.subTypes.includes('PhotoLive') && (
+        <View className="absolute top-2 left-2 z-10 opacity-70">
+          <MaterialIcons
+            name="motion-photos-on"
+            color={colors.dark_gray}
+            size={20}
+            className="shadow-2xl"
+          />
+        </View>
+      )}
+
       <Image
         source={{uri: photo.node.image.uri}}
         resizeMode="cover"

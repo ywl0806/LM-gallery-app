@@ -4,8 +4,10 @@ import {
 } from '@react-native-camera-roll/camera-roll';
 import {useQuery} from '@tanstack/react-query';
 import React, {useEffect, useState} from 'react';
-import {FlatList, StyleSheet, Text, View} from 'react-native';
+import {Button, FlatList, StyleSheet, Text, View} from 'react-native';
+
 import {SelectablePhoto} from '../components/elements/SeletablePhoto';
+import {uploadPhoto} from '../services/uploadPhoto';
 
 const styles = StyleSheet.create({
   container: {
@@ -31,7 +33,7 @@ const ONE_PAGE = 20;
 export const UploadScreen = () => {
   const [photos, setPhotos] = React.useState<PhotoIdentifier[]>([]);
   const [first, setFirst] = useState<number>(ONE_PAGE);
-  const [selectedPhotos, setSelectedPhotos] = useState<PhotoIdentifier[]>([]);
+  const [selectedPhotos, setSelectedPhotos] = useState<string[]>([]);
 
   const {data} = useQuery({
     queryKey: ['localPhotos', first],
@@ -41,6 +43,10 @@ export const UploadScreen = () => {
   useEffect(() => {
     if (data) {
       setPhotos(data);
+      data.forEach(photo => {
+        console.log(new Date(photo.node.timestamp * 1000));
+        console.log(photo.node.subTypes.includes('PhotoLive'));
+      });
     }
   }, [data]);
   return (
@@ -53,31 +59,38 @@ export const UploadScreen = () => {
         renderItem={({item}) => (
           <SelectablePhoto
             photo={item}
-            isSeleted={selectedPhotos.includes(item)}
+            isSeleted={selectedPhotos.includes(item.node.id)}
             seletePhoto={photo => {
-              if (selectedPhotos.includes(photo)) {
-                setSelectedPhotos(prev => prev.filter(p => p !== photo));
+              if (selectedPhotos.includes(photo.node.id)) {
+                setSelectedPhotos(prev =>
+                  prev.filter(p => p !== photo.node.id),
+                );
               } else {
-                setSelectedPhotos(prev => [...prev, photo]);
+                setSelectedPhotos(prev => [...prev, photo.node.id]);
               }
             }}
           />
-          //   <View style={styles.item}>
-          //     <Image
-          //       source={{uri: item.node.image.uri}}
-          //       resizeMode="cover"
-          //       style={styles.image}
-          //     />
-          //   </View>
         )}
         keyExtractor={item => item.node.image.uri}
-        numColumns={2}
+        numColumns={3}
         onEndReached={() => {
           setFirst(first + ONE_PAGE);
         }}
         onEndReachedThreshold={0.1}
-        ListEmptyComponent={<Text>Empty</Text>}
       />
+      <View className="absolute w-full flex justify-center bottom-11 bg-main_bg rounded-xl p-2">
+        <Button
+          title="upload"
+          onPress={() => {
+            const p = photos.filter(photo =>
+              selectedPhotos.includes(photo.node.id),
+            );
+            uploadPhoto(p).then(res => {
+              console.log(res);
+            });
+          }}
+        />
+      </View>
       {/* {photos.map((photo: PhotoIdentifier) => {
             return (
               <View key={photo.node.image.uri}>
