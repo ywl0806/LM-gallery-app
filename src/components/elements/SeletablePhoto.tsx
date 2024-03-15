@@ -1,13 +1,16 @@
 import {PhotoIdentifier} from '@react-native-camera-roll/camera-roll';
 import React from 'react';
-import {Image, StyleSheet, View, TouchableWithoutFeedback} from 'react-native';
-import colors from '../../../colors';
+import {Image, StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
+import {Text} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
+import colors from '../../../colors';
+
 type Props = {
   photo: PhotoIdentifier;
   isSeleted: boolean;
   seletePhoto: (photo: PhotoIdentifier) => void;
+  onPress: () => void;
 };
 
 const styles = StyleSheet.create({
@@ -29,7 +32,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export const SelectablePhoto = ({photo, isSeleted, seletePhoto}: Props) => {
+export const SelectablePhoto = ({
+  photo,
+  isSeleted,
+  seletePhoto,
+  onPress,
+}: Props) => {
   return (
     <View className="relative" style={[styles.item]}>
       <TouchableWithoutFeedback
@@ -45,21 +53,20 @@ export const SelectablePhoto = ({photo, isSeleted, seletePhoto}: Props) => {
         </View>
       </TouchableWithoutFeedback>
       {photo.node.subTypes.includes('PhotoLive') && (
-        <View className="absolute top-2 left-2 z-10 opacity-70">
-          <MaterialIcons
-            name="motion-photos-on"
-            color={colors.dark_gray}
-            size={20}
-            className="shadow-2xl"
-          />
+        <View className="absolute top-2 left-2 z-10 rounded-xl bg-white p-1 border-main border">
+          <Text className="font-mono font-bold text-[8px] text-dark_gray">
+            LIVE
+          </Text>
         </View>
       )}
 
-      <Image
-        source={{uri: photo.node.image.uri}}
-        resizeMode="cover"
-        style={styles.image}
-      />
+      <TouchableWithoutFeedback onPress={onPress}>
+        <Image
+          source={{uri: photo.node.image.uri}}
+          resizeMode="cover"
+          style={styles.image}
+        />
+      </TouchableWithoutFeedback>
     </View>
   );
 };
