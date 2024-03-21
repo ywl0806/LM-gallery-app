@@ -3,10 +3,9 @@ import {PhotoIdentifier} from '@react-native-camera-roll/camera-roll';
 export const uploadPhoto = async (photos: PhotoIdentifier[]) => {
   const formData = new FormData();
   photos.forEach(photo => {
-    const ext = photo.node.image.extension;
     formData.append('file', {
       uri: photo.node.image.uri,
-      type: `image/${ext}`,
+      type: 'image/*',
       name: photo.node.image.filename,
     });
   });
