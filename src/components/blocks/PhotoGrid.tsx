@@ -2,10 +2,14 @@ import React from 'react';
 import {Image, Text, View} from 'react-native';
 
 import {useGetPhotos} from '../../hooks/useGetPhotos';
+import {PhotosGroup} from '../../services/getPhotosGroup';
 
-export const PhotoGrid = () => {
-  const {photosGroups} = useGetPhotos({year: 2024, month: 2});
+type Props = {
+  photosGroups: PhotosGroup[];
+  refetch?: () => void;
+};
 
+export const PhotoGrid = ({photosGroups}: Props) => {
   return (
     <View>
       {photosGroups &&

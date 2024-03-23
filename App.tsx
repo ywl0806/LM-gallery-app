@@ -17,6 +17,14 @@ import {UploadScreen} from './src/screens/UploadScreen';
 const Tab = createBottomTabNavigator();
 
 const styles = StyleSheet.create({
+  header: {
+    backgroundColor: colors.main_bg,
+    height: 50,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
   root: {
     flex: 1,
     backgroundColor: colors.main_bg,
@@ -28,6 +36,7 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <NavigationContainer>
+        <View style={styles.header} />
         <View style={styles.root}>
           <Tab.Navigator
             tabBar={props => (

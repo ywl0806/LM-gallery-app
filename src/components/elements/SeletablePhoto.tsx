@@ -17,9 +17,9 @@ const styles = StyleSheet.create({
   item: {
     flex: 1,
     padding: 5,
+    minWidth: '33.333333%',
     maxWidth: '33.333333%',
     aspectRatio: 1,
-    width: '100%',
   },
   image: {
     flex: 1,

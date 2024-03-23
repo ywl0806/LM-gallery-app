@@ -7,14 +7,15 @@ export type UseGetPhotosProps = {
   month: number;
 };
 export const useGetPhotos = ({year, month}: UseGetPhotosProps) => {
-  const {data} = useQuery({
+  const {data, refetch} = useQuery({
     queryKey: ['photos', year, month],
     queryFn: () => {
       const from = new Date(year, month - 1, 1);
       const to = new Date(year, month);
       return getPhotosGroup({from, to});
     },
+    staleTime: 1000 * 60 * 30,
   });
 
-  return {photosGroups: data};
+  return {photosGroups: data, refetch};
 };
