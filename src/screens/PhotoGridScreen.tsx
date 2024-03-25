@@ -1,27 +1,45 @@
-import React, {useState} from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {useFocusEffect} from '@react-navigation/native';
+import React from 'react';
+import {ScrollView, View} from 'react-native';
 
-import colors from '../../colors';
 import {PhotoGrid} from '../components/blocks/PhotoGrid';
+import {useTab} from '../context/tabContext';
 import {useGetPhotos} from '../hooks/useGetPhotos';
-import {usePhotosRange} from '../hooks/usePhotosRange';
 
-export const PhotoGridScreen = ({route}) => {
-  const [year, setYear] = useState<number>(new Date().getFullYear());
-  const [month, setMonth] = useState<number>(new Date().getMonth() + 1);
+type Props = {
+  year: number;
+  month: number;
+};
 
-  const {range} = usePhotosRange();
+export const PhotoGridScreen = ({
+  route,
+}: {
+  route?: {
+    params: Props;
+  };
+}) => {
+  const {photosGroups, refetch} = useGetPhotos({
+    year: route?.params?.year ?? new Date().getFullYear(),
+    month: route?.params?.month ?? new Date().getMonth() + 1,
+  });
+  const {setYear, setMonth} = useTab();
 
-  const {photosGroups} = useGetPhotos({year, month});
+  useFocusEffect(() => {
+    // if (!isFetched) {
+    //   refetch();
+    // }
+
+    if (route?.params?.year) {
+      setYear(route.params.year);
+    }
+    if (route?.params?.month) {
+      setMonth(route.params.month);
+    }
+  });
+
   return (
-    <View>
+    <ScrollView className="h-full">
       <PhotoGrid photosGroups={photosGroups ?? []} />
-    </View>
+    </ScrollView>
   );
 };
