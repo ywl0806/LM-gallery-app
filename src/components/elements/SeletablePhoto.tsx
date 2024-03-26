@@ -5,6 +5,8 @@ import {Text} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import colors from '../../../colors';
+import {livePhotoIcon} from '../../icons/livePhotoIcon';
+import {LivePhotoBadge} from './LivePhotoBadge';
 
 type Props = {
   photo: PhotoIdentifier;
@@ -52,13 +54,7 @@ export const SelectablePhoto = ({
           {isSeleted && <Icon name="check" color={colors.dark_gray} />}
         </View>
       </TouchableWithoutFeedback>
-      {photo.node.subTypes.includes('PhotoLive') && (
-        <View className="absolute top-2 left-2 z-10 rounded-xl bg-white p-1 border-main border">
-          <Text className="font-mono font-bold text-[8px] text-dark_gray">
-            LIVE
-          </Text>
-        </View>
-      )}
+      {photo.node.subTypes.includes('PhotoLive') && <LivePhotoBadge />}
 
       <TouchableWithoutFeedback onPress={onPress}>
         <Image
