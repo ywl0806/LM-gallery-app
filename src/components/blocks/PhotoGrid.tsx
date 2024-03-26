@@ -46,7 +46,7 @@ const PhotoCard = ({
 };
 export const PhotoGrid = ({photosGroups}: Props) => {
   return (
-    <View className="h-full w-full">
+    <View className="flex-1">
       {photosGroups &&
         photosGroups.map(photosGroup => {
           return (
@@ -60,47 +60,6 @@ export const PhotoGrid = ({photosGroups}: Props) => {
                 }
                 numColumns={2}
               />
-              {/* {photosGroup.photos.map((photo, index) => {
-                if (index % 10 === 0)
-                  return (
-                    <View key={photo._id} style={styles.imageFull}>
-                      <Image
-                        src={`http://localhost:1323/${photo.thumbnail_url}`}
-                        alt={photo.file_name}
-                        style={styles.image}
-                      />
-                    </View>
-                  );
-                if (index % 10 > 0 && index % 10 <= 3)
-                  return (
-                    <View key={photo._id} style={styles.image33}>
-                      <Image
-                        src={`http://localhost:1323/${photo.thumbnail_url}`}
-                        alt={photo.file_name}
-                        style={styles.image}
-                      />
-                    </View>
-                  );
-                if (index % 4 === 0)
-                  return (
-                    <View key={photo._id} style={styles.imageFlex}>
-                      <Image
-                        src={`http://localhost:1323/${photo.thumbnail_url}`}
-                        alt={photo.file_name}
-                        style={styles.image}
-                      />
-                    </View>
-                  );
-                return (
-                  <View key={photo._id} style={styles.imageFlex}>
-                    <Image
-                      src={`http://localhost:1323/${photo.thumbnail_url}`}
-                      alt={photo.file_name}
-                      style={styles.image}
-                    />
-                  </View>
-                );
-              })} */}
             </View>
           );
         })}

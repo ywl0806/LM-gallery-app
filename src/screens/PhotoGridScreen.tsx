@@ -1,6 +1,5 @@
 import {useFocusEffect} from '@react-navigation/native';
 import React from 'react';
-import {ScrollView, View} from 'react-native';
 
 import {PhotoGrid} from '../components/blocks/PhotoGrid';
 import {useTab} from '../context/tabContext';
@@ -37,9 +36,5 @@ export const PhotoGridScreen = ({
     }
   });
 
-  return (
-    <ScrollView className="h-full">
-      <PhotoGrid photosGroups={photosGroups ?? []} />
-    </ScrollView>
-  );
+  return <PhotoGrid photosGroups={photosGroups ?? []} />;
 };
