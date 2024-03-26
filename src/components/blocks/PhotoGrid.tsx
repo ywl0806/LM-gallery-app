@@ -70,7 +70,6 @@ export const PhotoGrid = ({photos, refetch}: Props) => {
               <PhotoCard
                 photo={item}
                 onPress={() => {
-                  console.log(i);
                   setCurrentDetailPhotoIndex(i);
                   setDetailView(true);
                 }}

@@ -4,7 +4,8 @@ import {
   createNavigationContainerRef,
 } from '@react-navigation/native';
 import React, {useMemo, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import colors from '../../colors';
 import {DropdownYear} from '../components/blocks/DropdownYear';
@@ -26,7 +27,7 @@ const Tab = createMaterialTopTabNavigator();
 const tabRef = createNavigationContainerRef();
 
 export const HomeScreen = () => {
-  const {range, isFetched} = usePhotosRange();
+  const {range, isFetched, refetch} = usePhotosRange();
   const [year, setYear] = useState<number>(new Date().getFullYear());
   const [month, setMonth] = useState<number>(new Date().getMonth() + 1);
 
@@ -43,7 +44,8 @@ export const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
-      <View className="flex items-center overflow-visible z-50">
+      <View className="flex items-center flex-row justify-between overflow-visible z-50">
+        <View className="w-1/3" />
         <DropdownYear
           year={year}
           years={years}
@@ -58,6 +60,13 @@ export const HomeScreen = () => {
             }
           }}
         />
+        <TouchableOpacity
+          onPress={() => {
+            refetch();
+          }}
+          className="w-1/3 flex justify-end flex-row pr-5">
+          <Icon name="refresh" />
+        </TouchableOpacity>
       </View>
       <TabProvider
         value={{

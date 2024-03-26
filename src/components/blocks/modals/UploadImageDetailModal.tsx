@@ -13,6 +13,7 @@ import Swiper from 'react-native-swiper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import colors from '../../../../colors';
+import {LivePhotoBadge} from '../../elements/LivePhotoBadge';
 
 type Props = {
   detailView: boolean;
@@ -90,6 +91,14 @@ export const UploadImageDetailModal = ({
           index={currentDetailPhotoIndex}>
           {photos.map((photo, index) => (
             <View key={index} className="p-1">
+              <View
+                style={{
+                  position: 'absolute',
+                }}>
+                {photo.node.subTypes.includes('PhotoLive') && (
+                  <LivePhotoBadge size="large" />
+                )}
+              </View>
               <Image
                 source={{uri: photo.node.image.uri}}
                 resizeMode="contain"

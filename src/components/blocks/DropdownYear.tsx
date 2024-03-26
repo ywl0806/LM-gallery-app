@@ -68,36 +68,38 @@ export const DropdownYear = ({
   const [open, setOpen] = useState(false);
 
   return (
-    <View className="my-1">
-      <DropDownPicker
-        style={styles.picker}
-        open={open}
-        value={year}
-        items={
-          years.length !== 0
-            ? years.map(y => ({label: y + '', value: y}))
-            : [
-                {
-                  label: new Date().getFullYear().toString(),
-                  value: new Date().getFullYear(),
-                },
-              ]
-        }
-        setOpen={setOpen}
-        setValue={setYear}
-        onSelectItem={
-          ((item: {label: string; value: number}) => {
-            onSelected && onSelected(item.value);
-            return;
-          }) as any
-        }
-        containerStyle={styles.container}
-        labelStyle={styles.label}
-        dropDownContainerStyle={styles.dropdownContainer}
-        arrowIconStyle={styles.arrowIcon}
-        arrowIconContainerStyle={styles.arrowIconContainer}
-        textStyle={styles.text}
-      />
+    <View className="my-1 w-1/3 flex items-center flex-row justify-center">
+      <View>
+        <DropDownPicker
+          style={styles.picker}
+          open={open}
+          value={year}
+          items={
+            years.length !== 0
+              ? years.map(y => ({label: y + '', value: y}))
+              : [
+                  {
+                    label: new Date().getFullYear().toString(),
+                    value: new Date().getFullYear(),
+                  },
+                ]
+          }
+          setOpen={setOpen}
+          setValue={setYear}
+          onSelectItem={
+            ((item: {label: string; value: number}) => {
+              onSelected && onSelected(item.value);
+              return;
+            }) as any
+          }
+          containerStyle={styles.container}
+          labelStyle={styles.label}
+          dropDownContainerStyle={styles.dropdownContainer}
+          arrowIconStyle={styles.arrowIcon}
+          arrowIconContainerStyle={styles.arrowIconContainer}
+          textStyle={styles.text}
+        />
+      </View>
     </View>
   );
 };

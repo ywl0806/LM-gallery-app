@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import colors from '../../../../colors';
 import {Photo} from '../../../types/photo';
+import {LivePhotoBadge} from '../../elements/LivePhotoBadge';
 
 type Props = {
   detailView: boolean;
@@ -56,6 +57,13 @@ export const ViewDetailModal = ({
           index={currentDetailPhotoIndex}>
           {photos.map((photo, index) => (
             <View key={index} className="p-1">
+              <View
+                style={{
+                  position: 'absolute',
+                  zIndex: 10,
+                }}>
+                {photo.live_url && <LivePhotoBadge size="large" />}
+              </View>
               <Image
                 source={{uri: `http://localhost:1323/${photo.thumbnail_url}`}}
                 resizeMode="contain"

@@ -1,11 +1,9 @@
 import {PhotoIdentifier} from '@react-native-camera-roll/camera-roll';
 import React from 'react';
 import {Image, StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
-import {Text} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import colors from '../../../colors';
-import {livePhotoIcon} from '../../icons/livePhotoIcon';
 import {LivePhotoBadge} from './LivePhotoBadge';
 
 type Props = {

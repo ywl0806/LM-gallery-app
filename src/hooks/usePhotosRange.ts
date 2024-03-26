@@ -4,7 +4,7 @@ import {useMemo} from 'react';
 import {getPhotosRange} from '../services/getPhotosRange';
 
 export const usePhotosRange = () => {
-  const {data, isFetched} = useQuery({
+  const {data, isFetched, refetch} = useQuery({
     queryKey: ['photosRange'],
     queryFn: () => {
       return getPhotosRange();
@@ -53,5 +53,5 @@ export const usePhotosRange = () => {
   //   return rng;
   // }, [data]);
 
-  return {range, isFetched};
+  return {range, isFetched, refetch};
 };
