@@ -36,5 +36,7 @@ export const PhotoGridScreen = ({
     }
   });
 
-  return <PhotoGrid photosGroups={photosGroups ?? []} />;
+  return (
+    <PhotoGrid photos={photosGroups?.[0].photos ?? []} refetch={refetch} />
+  );
 };

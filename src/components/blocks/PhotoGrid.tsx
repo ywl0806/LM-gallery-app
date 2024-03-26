@@ -1,12 +1,19 @@
 import MasonryList from '@react-native-seoul/masonry-list';
-import React, {useMemo} from 'react';
-import {Image, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
+import React, {useMemo, useState} from 'react';
+import {
+  Image,
+  StyleProp,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View,
+  ViewStyle,
+} from 'react-native';
 
-import {PhotosGroup} from '../../services/getPhotosGroup';
 import {Photo} from '../../types/photo';
+import {ViewDetailModal} from './modals/ViewDetailModal';
 
 type Props = {
-  photosGroups: PhotosGroup[];
+  photos: Photo[];
   refetch?: () => void;
 };
 
@@ -30,39 +37,56 @@ const styles = StyleSheet.create({
 const PhotoCard = ({
   photo,
   style,
+  onPress,
 }: {
   photo: Photo;
+  onPress: () => void;
   style?: StyleProp<ViewStyle>;
 }) => {
   const randomHeight = useMemo(() => Math.floor(Math.random() * 100) + 200, []);
   return (
-    <View style={[style, styles.imageBox, {height: randomHeight}]}>
-      <Image
-        source={{uri: `http://localhost:1323/${photo.thumbnail_url}`}}
-        style={styles.image}
-      />
-    </View>
+    <TouchableWithoutFeedback onPress={onPress}>
+      <View style={[style, styles.imageBox, {height: randomHeight}]}>
+        <Image
+          source={{uri: `http://localhost:1323/${photo.thumbnail_url}`}}
+          style={styles.image}
+        />
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
-export const PhotoGrid = ({photosGroups}: Props) => {
+export const PhotoGrid = ({photos, refetch}: Props) => {
+  const [detailView, setDetailView] = useState(false);
+  const [currentDetailPhotoIndex, setCurrentDetailPhotoIndex] = useState(0);
+
   return (
     <View className="flex-1">
-      {photosGroups &&
-        photosGroups.map(photosGroup => {
-          return (
-            <View key={photosGroup._id.month} style={styles.imageGrid}>
-              <MasonryList
-                data={photosGroup.photos}
-                renderItem={
-                  (({item}: {item: Photo; index: number}) => {
-                    return <PhotoCard photo={item} />;
-                  }) as any
-                }
-                numColumns={2}
+      <MasonryList
+        onRefresh={refetch}
+        data={photos}
+        renderItem={
+          (({item, i}: {item: Photo; i: number}) => {
+            return (
+              <PhotoCard
+                photo={item}
+                onPress={() => {
+                  console.log(i);
+                  setCurrentDetailPhotoIndex(i);
+                  setDetailView(true);
+                }}
               />
-            </View>
-          );
-        })}
+            );
+          }) as any
+        }
+        numColumns={2}
+      />
+      <ViewDetailModal
+        detailView={detailView}
+        setDetailView={setDetailView}
+        photos={photos}
+        setCurrentDetailPhotoIndex={setCurrentDetailPhotoIndex}
+        currentDetailPhotoIndex={currentDetailPhotoIndex}
+      />
     </View>
   );
 };

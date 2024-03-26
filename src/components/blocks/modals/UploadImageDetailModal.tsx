@@ -23,7 +23,8 @@ type Props = {
   photos: PhotoIdentifier[];
   setCurrentDetailPhotoIndex: (value: number) => void;
   currentDetailPhotoIndex: number;
-  uploadPhoto: (photos: PhotoIdentifier[]) => Promise<any>;
+  uploadPhotos: (photos: PhotoIdentifier[]) => Promise<any> | any;
+  isLoading: boolean;
 };
 
 const styles = StyleSheet.create({
@@ -42,7 +43,8 @@ export const UploadImageDetailModal = ({
   photos,
   setCurrentDetailPhotoIndex,
   currentDetailPhotoIndex,
-  uploadPhoto,
+  uploadPhotos,
+  isLoading,
 }: Props) => {
   return (
     <Modal
@@ -98,32 +100,42 @@ export const UploadImageDetailModal = ({
         </Swiper>
         <View className="w-full flex justify-center h-[60px] items-end px-2 mb-7">
           <View className="flex flex-row items-center justify-end w-full ">
-            <TouchableOpacity
-              className={`flex flex-row items-center justify-items-center rounded-lg p-3 z-10
-            ${selectedPhotos.length > 0 ? 'bg-secondary_blue' : 'bg-light_gray'}
+            {isLoading ? (
+              <View>
+                <Text className="font-bold text-dark_gray mr-2">
+                  アップロード中...
+                </Text>
+              </View>
+            ) : (
+              <TouchableOpacity
+                className={`flex flex-row items-center justify-items-center rounded-lg p-3 z-10
+            ${
+              selectedPhotos.length > 0 || isLoading
+                ? 'bg-secondary_blue'
+                : 'bg-light_gray'
+            }
             `}
-              onPress={() => {
-                const p = photos.filter(photo =>
-                  selectedPhotos.includes(photo.node.id),
-                );
-                uploadPhoto(p).then(res => {
-                  console.log(res);
-                });
-              }}
-              disabled={selectedPhotos.length === 0}>
-              <Text className="font-bold text-dark_gray mr-2">
-                {`${selectedPhotos.length} 個の画像をアップロードする`}
-              </Text>
-              <Icon
-                name="upload"
-                color={
-                  selectedPhotos.length > 0
-                    ? colors.main_blue
-                    : colors.dark_gray
-                }
-                size={20}
-              />
-            </TouchableOpacity>
+                onPress={() => {
+                  const p = photos.filter(photo =>
+                    selectedPhotos.includes(photo.node.id),
+                  );
+                  uploadPhotos(p);
+                }}
+                disabled={selectedPhotos.length === 0 || isLoading}>
+                <Text className="font-bold text-dark_gray mr-2">
+                  {`${selectedPhotos.length} 個の画像をアップロードする`}
+                </Text>
+                <Icon
+                  name="upload"
+                  color={
+                    selectedPhotos.length > 0
+                      ? colors.main_blue
+                      : colors.dark_gray
+                  }
+                  size={20}
+                />
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       </View>

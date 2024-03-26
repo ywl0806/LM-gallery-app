@@ -10,8 +10,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import colors from '../../colors';
 import {UploadImageDetailModal} from '../components/blocks/modals/UploadImageDetailModal';
 import {SelectablePhoto} from '../components/elements/SeletablePhoto';
+import {useUploadPhotos} from '../hooks/useUploadPhotos';
 import {groupPhotosByDate} from '../services/getLocalPhotos';
-import {uploadPhoto} from '../services/uploadPhoto';
 
 const styles = StyleSheet.create({
   container: {
@@ -77,12 +77,19 @@ export const UploadScreen = ({closeModal}: Props) => {
     }
   }, [data]);
 
+  const {uploadPhotos, isPending} = useUploadPhotos();
   const seletePhoto = (photo: PhotoIdentifier) => {
     if (selectedPhotos.includes(photo.node.id)) {
       setSelectedPhotos(prev => prev.filter(p => p !== photo.node.id));
     } else {
       setSelectedPhotos(prev => [...prev, photo.node.id]);
     }
+  };
+  const handleUploadPhotos = async (photosArg: PhotoIdentifier[]) => {
+    uploadPhotos(photosArg).then(() => {
+      setSelectedPhotos([]);
+      closeModal();
+    });
   };
 
   return (
@@ -129,7 +136,7 @@ export const UploadScreen = ({closeModal}: Props) => {
       {/* image detail modal */}
       <View className="relative">
         <UploadImageDetailModal
-          uploadPhoto={uploadPhoto}
+          uploadPhotos={handleUploadPhotos}
           detailView={detailView}
           setDetailView={setDetailView}
           currentDetailPhoto={currentDetailPhoto}
@@ -138,34 +145,43 @@ export const UploadScreen = ({closeModal}: Props) => {
           photos={photos}
           setCurrentDetailPhotoIndex={setCurrentDetailPhotoIndex}
           currentDetailPhotoIndex={currentDetailPhotoIndex}
+          isLoading={isPending}
         />
       </View>
       <View className="w-full flex justify-center h-[60px] items-end px-2 mb-7">
         <View className="flex flex-row items-center justify-end w-full ">
-          <TouchableOpacity
-            className={`flex flex-row items-center justify-items-center rounded-lg p-3 z-10
+          {isPending ? (
+            <View>
+              <Text className="font-bold text-dark_gray mr-2">
+                アップロード中...
+              </Text>
+            </View>
+          ) : (
+            <TouchableOpacity
+              className={`flex flex-row items-center justify-items-center rounded-lg p-3 z-10
             ${selectedPhotos.length > 0 ? 'bg-secondary_blue' : 'bg-light_gray'}
             `}
-            onPress={() => {
-              const p = photos.filter(photo =>
-                selectedPhotos.includes(photo.node.id),
-              );
-              uploadPhoto(p).then(res => {
-                console.log(res);
-              });
-            }}
-            disabled={selectedPhotos.length === 0}>
-            <Text className="font-bold text-dark_gray mr-2">
-              {`${selectedPhotos.length} 個の画像をアップロードする`}
-            </Text>
-            <Icon
-              name="upload"
-              color={
-                selectedPhotos.length > 0 ? colors.main_blue : colors.dark_gray
-              }
-              size={20}
-            />
-          </TouchableOpacity>
+              onPress={() => {
+                const p = photos.filter(photo =>
+                  selectedPhotos.includes(photo.node.id),
+                );
+                handleUploadPhotos(p);
+              }}
+              disabled={selectedPhotos.length === 0}>
+              <Text className="font-bold text-dark_gray mr-2">
+                {`${selectedPhotos.length} 個の画像をアップロードする`}
+              </Text>
+              <Icon
+                name="upload"
+                color={
+                  selectedPhotos.length > 0
+                    ? colors.main_blue
+                    : colors.dark_gray
+                }
+                size={20}
+              />
+            </TouchableOpacity>
+          )}
         </View>
       </View>
     </View>
