@@ -17,12 +17,12 @@ export const LivePhotoBadge = ({size = 'small'}: Props) => {
       style={{
         shadowColor: '#000',
         shadowOffset: {
-          width: 0,
+          width: 1,
           height: 1,
         },
-        shadowOpacity: 0.22,
+
         shadowRadius: 2.22,
-        elevation: 3,
+        elevation: 2,
       }}>
       <Image
         source={livePhotoIcon}

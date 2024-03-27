@@ -9,6 +9,7 @@ import {
   ViewStyle,
 } from 'react-native';
 
+import colors from '../../../colors';
 import {Photo} from '../../types/photo';
 import {ViewDetailModal} from './modals/ViewDetailModal';
 
@@ -60,7 +61,11 @@ export const PhotoGrid = ({photos, refetch}: Props) => {
   const [currentDetailPhotoIndex, setCurrentDetailPhotoIndex] = useState(0);
 
   return (
-    <View className="flex-1">
+    <View
+      className="flex-1"
+      style={{
+        backgroundColor: colors.main_bg,
+      }}>
       <MasonryList
         onRefresh={refetch}
         data={photos}

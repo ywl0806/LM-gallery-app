@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
 
 export const LivePhotoView = ({photoUrl, liveUrl}: Props) => {
   const [viewLive, setViewLive] = useState(false);
+
   const photoAnim = useRef(new Animated.Value(1)).current;
   const liveAnim = useRef(new Animated.Value(0)).current;
   const videoRef = useRef<Video>(null);
@@ -96,24 +97,26 @@ export const LivePhotoView = ({photoUrl, liveUrl}: Props) => {
             />
           </View>
         </Animated.View>
-        <Animated.View
-          style={[
-            styles.animatedContainer,
-            {
-              opacity: liveAnim,
-            },
-          ]}>
-          <View>
-            <Video
-              ref={videoRef}
-              source={{uri: liveUrl}}
-              resizeMode="contain"
-              paused={!viewLive}
-              controls={false}
-              style={styles.live}
-            />
-          </View>
-        </Animated.View>
+        {liveUrl && (
+          <Animated.View
+            style={[
+              styles.animatedContainer,
+              {
+                opacity: liveAnim,
+              },
+            ]}>
+            <View>
+              <Video
+                ref={videoRef}
+                source={{uri: liveUrl}}
+                resizeMode="contain"
+                paused={!viewLive}
+                controls={false}
+                style={styles.live}
+              />
+            </View>
+          </Animated.View>
+        )}
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );

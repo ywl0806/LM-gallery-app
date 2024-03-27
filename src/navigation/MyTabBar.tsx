@@ -19,7 +19,9 @@ export const MyTabBar = ({
   return (
     <View className="relative w-full ">
       <View className="absolute w-full h-0 left-0 z-10">
-        <View className="fixed w-[60px] h-[60px] bg-main_bg rounded-full mx-auto -mt-4 z-10 flex justify-center items-center">
+        <View
+          className="fixed w-[60px] h-[60px] rounded-full mx-auto -mt-4 z-10 flex justify-center items-center"
+          style={{backgroundColor: colors.main_bg}}>
           <TouchableOpacity
             onPress={() => {
               setUploadModal(true);

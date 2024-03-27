@@ -1,5 +1,5 @@
 import {PhotoIdentifier} from '@react-native-camera-roll/camera-roll';
-import React from 'react';
+import React, {useMemo} from 'react';
 import {Image, StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -38,6 +38,11 @@ export const SelectablePhoto = ({
   seletePhoto,
   onPress,
 }: Props) => {
+  const isPhotoLive = useMemo(
+    () => photo.node.subTypes.includes('PhotoLive'),
+    [photo],
+  );
+
   return (
     <View className="relative" style={[styles.item]}>
       <TouchableWithoutFeedback
@@ -52,7 +57,7 @@ export const SelectablePhoto = ({
           {isSeleted && <Icon name="check" color={colors.dark_gray} />}
         </View>
       </TouchableWithoutFeedback>
-      {photo.node.subTypes.includes('PhotoLive') && <LivePhotoBadge />}
+      {isPhotoLive && <LivePhotoBadge />}
 
       <TouchableWithoutFeedback onPress={onPress}>
         <Image
