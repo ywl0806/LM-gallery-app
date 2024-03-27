@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import colors from '../../../../colors';
 import {Photo} from '../../../types/photo';
 import {LivePhotoBadge} from '../../elements/LivePhotoBadge';
+import {LivePhotoView} from '../LivePhotoView';
 
 type Props = {
   detailView: boolean;
@@ -64,11 +65,18 @@ export const ViewDetailModal = ({
                 }}>
                 {photo.live_url && <LivePhotoBadge size="large" />}
               </View>
-              <Image
-                source={{uri: `http://localhost:1323/${photo.thumbnail_url}`}}
-                resizeMode="contain"
-                style={styles.image}
-              />
+              {photo.live_url ? (
+                <LivePhotoView
+                  photoUrl={`http://localhost:1323/${photo.thumbnail_url}`}
+                  liveUrl={`http://localhost:1323/${photo.live_url}`}
+                />
+              ) : (
+                <Image
+                  source={{uri: `http://localhost:1323/${photo.thumbnail_url}`}}
+                  resizeMode="contain"
+                  style={styles.image}
+                />
+              )}
             </View>
           ))}
         </Swiper>
